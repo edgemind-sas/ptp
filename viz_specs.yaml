@@ -1,0 +1,98 @@
+components:
+  all:
+    name: ".*"
+    style:
+      fontname: "monospace"
+      fontsize: "10"
+      shape: "box"
+      style: "filled"
+      fontcolor: "#1f416d"
+      color: "#c9d4e6"
+    ports:
+      - name: ".*"
+        color: "#ef7b26"
+    # conditions:
+    #   - expr: "not {COMP}.variable('flow_fed_available_out').value()"
+    #     style:
+    #       color: "#FF0000"
+    #   variable:
+    #     name:
+    #     operator:
+    ports:
+      - name: flow_in
+        spot: left
+      - name: flow_out
+        spot: right
+
+  start:
+    type: Start
+    style:
+      fontname: "monospace"
+      fontsize: "10"
+      shape: "box"
+      style: "filled"
+      fontcolor: "#202020"
+      color: "#4CAF50"
+
+  tasks:
+    type: Task
+    conditions:
+      - expr: "{COMP}.automaton('flow_out_tempo').states()[0].isActive()"
+        style:
+          color: "#4CAF50"
+
+  end:
+    type: End
+    conditions:
+      - expr: "{COMP}.variable('flow_fed_in').value()"
+        style:
+          color: "#4CAF50"
+
+    
+  # block:
+  #   type: Block
+  #   ports:
+  #     - name: flow_in
+  #       spot: left
+  #     - name: flow_out
+  #       spot: right
+
+  # logic:
+  #   type: Logic
+  #   ports:
+  #     - name: "flow_.*_in"
+  #       spot: bottom
+  #     - name: "flow_.*_out"
+  #       spot: top
+
+connections:
+
+  ignore_in_out:
+    port_target: '(.+)_out$'
+    ignore: True
+  
+  all:
+    # renaming:
+    #   - attr: "name"
+    #     pattern: '(.+)(_out|_in)$'
+    #     replace: '\g<1>'
+    style:
+      stroke_color: "#1f416d"
+      to_arrow: Standard
+
+  tasks_done:
+    conditions:
+      - expr: "{CS}.variable('flow_fed_out').value()"
+        style:
+          stroke_color: "#4CAF50"
+          stroke_width: 2
+    
+      
+  flow_available:
+    port_target: ".*available.*"
+    style:
+      stroke_color: "#FF416d"
+      stroke_width: 2
+      to_arrow: Circle
+      
+    

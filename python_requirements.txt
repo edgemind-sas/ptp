@@ -1,0 +1,3 @@
+openpyxl==3.1.2
+xlrd==2.0.1
+-e git+https://github.com/edgemind-sas/muscadet.git#egg=muscadet

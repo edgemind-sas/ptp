@@ -1,0 +1,5 @@
+project_name: PTP project
+system_name: PTP
+system_filename: system.py
+system_class_name: PTPSystem
+viz_specs_filename: viz_specs.yaml
