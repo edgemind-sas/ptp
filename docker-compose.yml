@@ -5,6 +5,4 @@ services:
     build: .
     ports:
       - "8000:8000"
-    volumes:
-      - .:/app
     command: ["cod3s-project", "--state-less", "-v", "-d"]
