@@ -1,0 +1,100 @@
+</html>
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+</head>
+
+<body>
+  <form id="config-form">
+    <div>
+      <label for="task_id">Task ID:</label>
+      <select id="task_id" name="task_id"></select>
+    </div>
+    <div>
+      <label for="label">Label:</label>
+      <select id="label" name="label"></select>
+    </div>
+    <div>
+      <label for="depends_on">Dependencies:</label>
+      <select id="depends_on" name="depends_on"></select>
+    </div>
+    <div>
+      <label for="duration_min">Task duration min:</label>
+      <select id="duration_min" name="duration_min"></select>
+    </div>
+    <div>
+      <label for="duration_max">Task duration max:</label>
+      <select id="duration_max" name="duration_max"></select>
+    </div>
+    <!-- Add additional form fields for other attributes as needed -->
+    <div>
+      <button type="button" onclick="saveConfiguration()">Save</button>
+    </div>
+  </form>
+  <script>
+    // Code to populate dropdowns and save configuration
+  </script>
+</body>
+
+</html>
+
+
+<script>
+  window.onload = function() {
+    google.script.run.withSuccessHandler(populateDropdowns).getTaskSheetHeaders();
+  };
+
+/**
+ * Populates dropdown menus with header options from a Google Sheet and
+ * sets the default selection based on their index position.
+ *
+ * @param {string[]} headers - An array of header names from the Google Sheet.
+ */
+function populateDropdowns(headers) {
+  var attributes = [
+    'task_id',
+    'label',
+    'depends_on',
+    'duration_min',
+    'duration_max',
+    'cost_rate' // Add more attributes here if needed
+  ];
+
+  // Iterate over all the attributes and populate their respective dropdowns
+  attributes.forEach(function(attribute, index) {
+    var dropdown = document.getElementById(attribute);
+    // Clear any existing options
+    dropdown.innerHTML = '';
+    // Create and append an option for each header
+    headers.forEach(function(header, headerIndex) {
+      var option = document.createElement('option');
+      option.textContent = header; // Set the text content for the option
+      option.value = header;       // Set the value attribute for the option
+      dropdown.appendChild(option); // Append the option to the dropdown
+      
+      // Optionally, set the default selected option based on index
+      if (headerIndex === index) {
+        dropdown.selectedIndex = headerIndex;
+      }
+    });
+  });
+  // Optionally, load and set previously saved configurations here
+}
+
+
+  function saveConfiguration() {
+    var config = {
+      task_id: document.getElementById('task_id').value,
+      label: document.getElementById('label').value,
+      depends_on: document.getElementById('depends_on').value,
+      duration_min: document.getElementById('duration_min').value,
+      duration_max: document.getElementById('duration_max').value,
+      // Add other configuration pairs
+    };
+    google.script.run.withSuccessHandler(function() {
+      console.log('Task Configuration saved!');
+    }).saveTaskConfig(config);
+  }
+</script>
